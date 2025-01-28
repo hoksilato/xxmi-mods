@@ -1,0 +1,1 @@
+If you wanted to use the pink lips just rename the: Optional.dds file as "BelleFaceADiffuse" and delete or rename the original one.
