@@ -1,0 +1,188 @@
+; Toggle Setup
+
+[Constants]
+global $required_wwmi_version = 0.70
+global $object_guid = 141759
+global $mesh_vertex_count = 35426
+global $shapekey_vertex_count = 31536
+global $mod_id = -1000
+global $state_id = 0
+global $mod_enabled = 0
+global $object_detected = 0
+
+global persist $MRoverMM_MEoDP
+global persist $MRoverMM_Clothes
+global persist $MRoverMM_Hair
+
+[KeyToggleEyeColor]
+condition = $object_detected
+key = Alt VK_OEM_4
+type = cycle
+$MRoverMM_MEoDP = 0,1,2
+
+[KeyToggleClothes]
+condition = $object_detected
+key = Alt VK_OEM_6
+type = cycle
+$MRoverMM_Clothes = 0,1
+
+[KeyToggleHair]
+condition = $object_detected
+key = Alt VK_OEM_5
+type = cycle
+$MRoverMM_Hair = 0,1
+
+[Present]
+if $object_detected
+	if $mod_enabled
+		post $object_detected = 0
+	else
+		if $mod_id == -1000
+			run = CommandListRegisterMod
+		endif
+	endif
+endif
+
+[CommandListRegisterMod]
+$\WWMIv1\required_wwmi_version = $required_wwmi_version
+$\WWMIv1\object_guid = $object_guid
+Resource\WWMIv1\ModName = ref ResourceModName
+Resource\WWMIv1\ModAuthor = ref ResourceModAuthor
+Resource\WWMIv1\ModDesc = ref ResourceModDesc
+Resource\WWMIv1\ModLink = ref ResourceModLink
+Resource\WWMIv1\ModLogo = ref ResourceModLogo
+run = CommandList\WWMIv1\RegisterMod
+$mod_id = $\WWMIv1\mod_id
+if $mod_id >= 0
+	$mod_enabled = 1
+endif
+
+
+; Resources: Mod Info -------------------------
+
+[ResourceModName]
+type = Buffer
+data = "M-Rover - 'Night Blade' Retexture"
+
+[ResourceModAuthor]
+type = Buffer
+data = "Ether"
+
+[ResourceModDesc]
+; type = Buffer
+; data = "Empty Mod Description"
+
+[ResourceModLink]
+; type = Buffer
+; data = "Empty Mod Link"
+
+[ResourceModLogo]
+; filename = Textures/Logo.dds
+
+
+
+; Code that handles texture override process
+
+[CommandListTriggerResourceOverrides]
+CheckTextureOverride = ps-t0
+CheckTextureOverride = ps-t1
+CheckTextureOverride = ps-t2
+CheckTextureOverride = ps-t3
+CheckTextureOverride = ps-t4
+CheckTextureOverride = ps-t5
+CheckTextureOverride = ps-t6
+CheckTextureOverride = ps-t7
+
+[TextureOverrideMRover]
+hash = c9db8418
+run = CommandListTriggerResourceOverrides
+$object_detected = 1
+
+; Textures -------------------------
+
+; Eyes
+[ResourceTexMEoDP_Tohno]
+filename = Textures/Components-0-1-4 t=56343b28-T.dds
+[ResourceTexMEoDP_Ryougi]
+filename = Textures/Components-0-1-4 t=56343b28-R.dds
+[ResourceTexMEoDP_Off]
+filename = Textures/Components-0-1-4 t=56343b28-O.dds
+
+[TextureOverrideEye]
+hash = 56343b28
+match_priority = 0
+; Condition 0 - Tohno Eye
+if $MRoverMM_MEoDP == 0
+    this = ResourceTexMEoDP_Tohno
+    endif
+; Condition 1 - Ryougi Eye
+if $MRoverMM_MEoDP == 1
+    this = ResourceTexMEoDP_Ryougi
+    endif
+; Condition 2 - 'Off'
+if $MRoverMM_MEoDP == 2
+    this = ResourceTexMEoDP_Off
+    endif
+
+; Face
+[ResourceTexFace_Monochrome]
+filename = Textures/Components-1 t=7931ea8a.dds
+
+[TextureOverrideFace]
+hash = 7931ea8a
+match_priority = 0
+this = ResourceTexFace_Monochrome
+
+; Top
+[ResourceTexTop_BlackShirt]
+filename = Textures/Components-2 t=65af60de-B.dds
+[ResourceTexTop_WhiteShirt]
+filename = Textures/Components-2 t=65af60de-W.dds
+
+[TextureOverrideTop]
+hash = 65af60de
+match_priority = 0
+; Condition 0 - Seth - Black Shirt/Denim Trousers
+if $MRoverMM_Clothes == 0
+    this = ResourceTexTop_BlackShirt
+    endif
+; Condition 1 - Classic - Light Grey Shirt/Black Trousers
+if $MRoverMM_Clothes == 1
+    this = ResourceTexTop_WhiteShirt
+    endif
+
+; Bottom
+[ResourceTexBottom_Denim]
+filename = Textures/Components-3 t=db7ba06b-D.dds
+[ResourceTexBottom_Black]
+filename = Textures/Components-3 t=db7ba06b-B.dds
+
+[TextureOverrideBottom]
+hash = db7ba06b
+match_priority = 0
+; Condition 0 - Seth - Black Shirt/Denim Trousers
+if $MRoverMM_Clothes == 0
+    this = ResourceTexBottom_Denim
+    endif
+; Condition 1 - Classic - Light Grey Shirt/Black Trousers
+if $MRoveRMM_Clothes == 1
+    this = ResourceTexBottom_Black
+    endif
+
+; Hair
+[ResourceTexHair_Streak]
+filename = Textures/Components-0 t=b4855e43-S.dds
+[ResourceTexHair_Black]
+filename = Textures/Components-0 t=b4855e43-B.dds
+
+[TextureOverrideHair]
+hash = b4855e43
+match_priority = 0
+; Condition 0 - White streak
+if $MRoverMM_Hair == 0
+    this = ResourceTexHair_Streak
+    endif
+; Condition 1 - Vanilla black
+if $MRoverMM_Hair == 1
+    this = ResourceTexHair_Black
+    endif
