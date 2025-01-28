@@ -1,0 +1,1 @@
+This is a patch file for my Dark Skinned Male Rover mod, to prevent his skin from returning to pale after he gets injured. To use, first install my base mod (found here: https://gamebanana.com/mods/566945), then drag the injured fix.ini file from here into my main mod folder, next to the mod.ini file. Both ini files need to coexist for the fix to work.
