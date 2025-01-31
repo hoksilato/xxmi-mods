@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['WWMI_Fix_13.py'],
+    ['WWMI_FIX_14.py'],
     pathex=[],
     binaries=[],
     datas=[('version_info.txt', '.'), ('manifest.xml', '.'), ('C:\\Genshin Migoto\\3dmigoto\\Mods\\Skill Issue\\genshin_env\\Scripts\\FixTexture.zip', '.')],
@@ -28,7 +28,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='WWMI_Fix_13',
+    name='WWMI_FIX_14',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

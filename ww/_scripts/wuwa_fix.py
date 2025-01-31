@@ -1,4 +1,8 @@
-# Fix 1.3
+#Fix 1.2 + 1.3 
+#Lightmap Fix for some characters
+#Jianxin Shapekey Sum Fix
+#Verina Remap, ChangLi Remap
+# Author Gustav0
 
 import os
 import struct
@@ -12,16 +16,18 @@ import sys
 from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
-@dataclass
-class RemapData:
-    character: str
-    indices: List[int]
 
 @dataclass
 class HashMap:
     old_vs_new: Dict[str, Dict[str, str]]
     old_vs_new13: Dict[str, Dict[str, str]]
+    old_vs_new14: Dict[str, Dict[str, str]]
 
+@dataclass
+class RemapData:
+    character: str
+    indices: List[int] | Dict[int, int]
+    
 old_vs_new = {
     "Verina": {
         "83ced9f7": "82aa82e1"
@@ -41,19 +47,11 @@ old_vs_new = {
         "f8375eb4": "3ab7c4d1",
         "6e2f48ba": "a4be44e5"
     },
-    "Yinlin": {
-        "86b95122": "00120eee",
-        "148a83c6": "33d00a20",
-        "750390fa": "584b7755",
-        "9ebf7cad": "5065eae3",
-        "e56f82b1": "e50849e0",
-        "76967821": "9ea4dc96",
-        "1f0f6dc8": "58b06268",
-        "30053482": "87bbb0c1"
-    },
     "Baizhi": {
         "37bed36b": "718456ac",
-        "52c9b804": "d7756134"
+        "52c9b804": "d7756134",
+        "1a09bbb5": "43ae1deb",
+        "d755a4a9": "fe4e4afe"
     },
     "Calcharo": {
         "8b43ad38": "f3e04a65",
@@ -96,11 +94,16 @@ old_vs_new13 = {
         "ead048c8": "068dd115"
     },
     "Rover (Female)": {
-        "63d590db": "c0ca0958"
+        "2d5b41f6": "372bd73a",
     },
     "Verina": {
-        "2d5b41f6": "372bd73a",
-        "fd892e3c": "953daba7"
+        "fd892e3c": "953daba7",
+        "5981e400": "40f3c4ea",
+        "63d590db": "c0ca0958"
+    },
+    "Encore": {
+        "a347d2bc": "47c515ac",
+        "6ff2b9f1": "b6021f06"
     },
     "Sanhua": {
         "2584190a": "cef6494f",
@@ -123,8 +126,28 @@ old_vs_new13 = {
     }
 }
 
-hash_maps = HashMap(old_vs_new, old_vs_new13)
+old_vs_new14 = {
+    "Rover(Female)": {
+        "c446a221": "99d33a32",
+        "aeb47e33": "e04dea55"
+    },
+    "ChangLi": {
+        "5f8aac45": "d14bed8b",
+        "1ccb8008": "59f24b66",
+        "060f5303": "277e18c9",
+    },
+    "Jianxin": {
+        "e9f8341f": "9b60ec42",
+        "82d39ecb": "29ba85c5",
+        "068dd115": "bc9677ff"
+    },
+    "Lingyang": {
+        "587edf05": "9925d10e"
+    }
+}
 
+hash_maps = HashMap(old_vs_new, old_vs_new13, old_vs_new14)
+    
 remaps = {
     "83ced9f7": RemapData("Verina", [
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -140,7 +163,7 @@ remaps = {
         164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 178, 177, 174, 175,
         176, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191,
         192, 193, 194]),
-    "d8decbca": RemapData("ChangLi", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    "fd9483ca": RemapData("ChangLi", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
                 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
                 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65,
                 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89,
@@ -152,11 +175,35 @@ remaps = {
                 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234,
                 235, 236, 237, 252, 238, 257, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 258, 259, 260,
                 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 277, 278, 279, 280]),
+
+
+    "060f5303": RemapData("Changli_1.4", {
+        # Default Changli 1.4 remapping
+        135: 137,
+        137: 135,
+        123: 124,
+        124: 125,
+        125: 126,
+        126: 123,
+        # Component remap data for unnamed mod
+        "component_remap": {
+            "vertex_offset": 16935,
+            "indices": {
+                64: 65,
+                65: 66,
+                66: 67,
+                67: 64,
+                76: 78,
+                78: 76
+            }
+        }
+    })
 }
+
 
 def log_message(log, message):
     log.append(message)
-    print(message)
+    print(message)  
 
 def create_backup(file_path, ini_file=False):
     backup_name = ('DISABLED ' if ini_file else '') + os.path.basename(file_path) + '.bak'
@@ -172,11 +219,10 @@ def collect_ini_files(folder_path: str) -> List[str]:
     for root, dirs, files in os.walk(folder_path):
         for file in files:
             if file.lower().endswith('.ini'):
-                # Check the filename (not the full path) for exclude keywords
                 if not any(keyword in file.lower() for keyword in exclude_keywords):
                     file_path = os.path.join(root, file)
                     ini_files.append(file_path)
-
+    
     print(f"Found {len(ini_files)} ini files.")
     return ini_files
 
@@ -185,57 +231,85 @@ def extract_texture_from_zip(textures_folder, texture_name):
         root_path = Path(sys._MEIPASS).resolve()
     except Exception:
         root_path = Path().resolve()
-
+    
     zip_path = root_path / 'FixTexture.zip'
-
+    
     extracted_path = None
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
         zip_ref.extract(texture_name, textures_folder)
         extracted_path = os.path.join(textures_folder, texture_name)
-
+    
     return extracted_path
 
 def apply_lightmap_fix(file_path):
     log = []
     file_modified = False
-
+    match_found = False
+    texture_to_extract = None
     try:
         with open(file_path, 'r', encoding="utf-8") as f:
             lines = f.readlines()
 
-        new_lines = []
-        texture_to_extract = None
-        for line in lines:
-            if line.strip().startswith("filename"):
-                if "435d999a" in line:
-                    new_line = "filename = Textures/FixFaceLightmap t=aeb47e33.dds\n"
-                    new_lines.append(new_line)
-                    file_modified = True
-                    texture_to_extract = "FixFaceLightmap t=aeb47e33.dds"
-                elif "28708ab8" in line:
-                    new_line = "filename = Textures/FixFaceLightMapSanhua t=0bd3b5ab.dds\n"
-                    new_lines.append(new_line)
-                    file_modified = True
-                    texture_to_extract = "FixFaceLightMapSanhua t=0bd3b5ab.dds"
+        for i, line in enumerate(lines):
+            if line.strip().startswith("[TextureOverride"):
+                texture_name = line.strip()[16:-1]
+                resource_section = f"[Resource{texture_name}]"
+
+                for j in range(i + 1, min(i + 5, len(lines))):
+                    if "435d999a" in lines[j] or "aeb47e33" in lines[j]:
+                        match_found = True
+                        texture_to_extract = process_resource_section(
+                            lines, resource_section, 
+                            "Textures/FaceLightMap t=e04dea55.dds"
+                        )
+                        file_modified = True if texture_to_extract else file_modified
+                        break
+                    elif "28708ab8" in lines[j]:
+                        match_found = True
+                        texture_to_extract = process_resource_section(
+                            lines, resource_section, 
+                            "Textures/FixFaceLightMapSanhua t=0bd3b5ab.dds"
+                        )
+                        file_modified = True if texture_to_extract else file_modified
+                        break
+
+        # Secondary search for filename entries in [ResourceTextureX] sections
+        for i, line in enumerate(lines):
+            if line.strip().startswith("[Resource") and "Texture" in line:
+                if i + 1 < len(lines):
+                    current_filename = lines[i + 1].strip()
+                    if "filename = Textures/FaceLightMap t=e04dea55.dds" in current_filename:
+                        match_found = True
+                        texture_to_extract = "FaceLightMap t=e04dea55.dds"
+                    elif "filename = Textures/FixFaceLightMapSanhua t=0bd3b5ab.dds" in current_filename:
+                        match_found = True
+                        texture_to_extract = "FixFaceLightMapSanhua t=0bd3b5ab.dds"
+
+        # Check if Textures folder exists
+        textures_folder = os.path.join(os.path.dirname(file_path), 'Textures')
+        if match_found and texture_to_extract:
+            if os.path.isdir(textures_folder):
+                texture_file = os.path.join(textures_folder, os.path.basename(texture_to_extract))
+                if not os.path.isfile(texture_file):
+                    extracted_path = extract_texture_from_zip(textures_folder, texture_to_extract)
+                    if extracted_path:
+                        if file_modified:  # Filename was updated during this run
+                            log_message(log, f"Extracted texture to complete update: {os.path.basename(extracted_path)}")
+                        else:  # Filename was already correct, but texture was missing
+                            log_message(log, f"Extracted missing texture: {os.path.basename(extracted_path)}")
+                    else:
+                        log_message(log, f"Failed to extract texture: {texture_to_extract}")
                 else:
-                    new_lines.append(line)
+                    log_message(log, f"Texture {os.path.basename(texture_file)} already exists.")
             else:
-                new_lines.append(line)
+                log_message(log, f"Skipped texture check: Folder 'Textures' not found.")
 
-        if file_modified and texture_to_extract:
-            textures_folder = os.path.join(os.path.dirname(file_path), 'Textures')
-            if not os.path.exists(textures_folder):
-                os.makedirs(textures_folder)
-
-            extracted_path = extract_texture_from_zip(textures_folder, texture_to_extract)
-            if extracted_path:
-                log_message(log, f"Extracted texture: {os.path.basename(extracted_path)}")
-
+        if file_modified:
             with open(file_path, 'w', encoding="utf-8") as f:
-                f.writelines(new_lines)
-            log_message(log, f'Applying lightmap fix to: {os.path.basename(file_path)}')
-        else:
-            log_message(log, f'File: {os.path.basename(file_path)} had no matches for lightmap fix. Skipping')
+                f.writelines(lines)
+            log_message(log, f'Applied lightmap fix to: {os.path.basename(file_path)}')
+        elif not match_found:
+            log_message(log, f'No matches for lightmap fix in: {os.path.basename(file_path)}')
 
     except Exception as e:
         log_message(log, f'Error processing file: {os.path.basename(file_path)}')
@@ -243,23 +317,83 @@ def apply_lightmap_fix(file_path):
 
     return log, file_modified
 
+
+def process_resource_section(lines, resource_section, target_filename):
+    for k, line in enumerate(lines):
+        if line.strip() == resource_section:
+            if k + 1 < len(lines) and lines[k + 1].strip().startswith("filename ="):
+                current_filename = lines[k + 1].strip()
+                if current_filename != f"filename = {target_filename}":
+                    lines[k + 1] = f"filename = {target_filename}\n"
+                    print(f"Updated: {current_filename} -> filename = {target_filename}")
+                    return target_filename
+                else:
+                    print(f"Skipped: {current_filename} (already updated)")
+    return None
+
+def ReverseCBHotFix(ini_files):
+    log = []
+    files_modified = 0
+    
+    try:
+        for file_path in ini_files:
+            with open(file_path, 'r', encoding="utf-8") as f:
+                lines = f.readlines()
+                
+            file_modified = False
+            for i in range(len(lines)-1):
+                if "[TextureOverrideMarkBoneDataCB]" in lines[i]:
+                    if "d14bed8b" in lines[i+1]:
+                        lines[i+1] = lines[i+1].replace("d14bed8b", "f02baf77")
+                        file_modified = True
+                        
+            if file_modified:
+                with open(file_path, 'w', encoding="utf-8") as f:
+                    f.writelines(lines)
+                log_message(log, f'Applied CB hotfix to: {os.path.basename(file_path)}')
+                files_modified += 1
+            else:
+                log_message(log, f'No CB hotfix needed for: {os.path.basename(file_path)}')
+                
+    except Exception as e:
+        log_message(log, f'Error processing files')
+        log_message(log, str(e))
+        
+    return log, files_modified > 0
+
 def apply_hash_fix(folder_path):
     log = []
     processed_files_count = 0
     ini_files = collect_ini_files(folder_path)
-
+    
     if not ini_files:
         log_message(log, "No .ini files found. Make sure you're in the correct directory.")
         return log, processed_files_count, 0
-
+    
+    # Apply CB hotfix first
+    cb_log, cb_modified = ReverseCBHotFix(ini_files)
+    log.extend(cb_log)
+    
+    # Check ini files for [ResourceMergedSkeleton] for ChangLi 1.4 hashes
+    use_default_remap = False
+    for ini_file in ini_files:
+        try:
+            with open(ini_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+                if '[ResourceMergedSkeleton]' in content and ('060f5303' or 'fd9483ca' in content):
+                    use_default_remap = True
+                    break
+        except Exception as e:
+            log_message(log, f"Error reading {ini_file}: {str(e)}")
+            continue
+    
     for file_path in ini_files:
         try:
             log_message(log, f"Processing INI file: {file_path}")
-
-            # Apply lightmap fix
+        
             lightmap_log, lightmap_modified = apply_lightmap_fix(file_path)
             log.extend(lightmap_log)
-
+            
             with open(file_path, 'r', encoding="utf-8") as f:
                 s = f.read()
             meshes_folder = os.path.join(os.path.dirname(file_path), 'Meshes')
@@ -269,8 +403,9 @@ def apply_hash_fix(folder_path):
 
             blend_files = [blend_file for blend_file in os.listdir(meshes_folder)
                            if os.path.isfile(os.path.join(meshes_folder, blend_file)) and
-                           "blend" in blend_file.lower() and ".buf" in blend_file.lower()]
-
+                           "blend" in blend_file.lower() and ".buf" in blend_file.lower() and
+                           not blend_file.lower().endswith('.bak')]
+            
             file_modified = lightmap_modified
             for remap_key, vg_remap in remaps.items():
                 if remap_key in s:
@@ -278,50 +413,100 @@ def apply_hash_fix(folder_path):
                         log_message(log, f'No blend file found for {vg_remap.character} in folder: {meshes_folder}')
                         continue
 
-                    log_message(log, f'Found blend files for {vg_remap.character}. Applying remap...')
-                    for blend_file in blend_files:
-                        blend_file_path = os.path.join(meshes_folder, blend_file)
-                        try:
-                            with open(blend_file_path, "rb") as g:
-                                blend_data = g.read()
-                                remap_data = remap(blend_data, vg_remap.indices)
-                            with open(blend_file_path, "wb") as g:
-                                g.write(remap_data)
-                                log_message(log, f"File: {blend_file} VGs remapped successfully!")
-                            file_modified = True
-                        except Exception as e:
-                            log_message(log, f'Error remapping file: {blend_file}')
-                            log_message(log, str(e))
-                            continue
+                    if remap_key == "fd9483ca":
+                        # Apply first remap with fd9483ca
+                        log_message(log, f'Found blend files for {vg_remap.character}. Applying first remap...')
+                        for blend_file in blend_files:
+                            blend_file_path = os.path.join(meshes_folder, blend_file)
+                            try:
+                                # Create backup before modifying
+                                backup_path = blend_file_path + '.bak'
+                                import shutil
+                                shutil.copy2(blend_file_path, backup_path)
+                                log_message(log, f"Created backup: {os.path.basename(backup_path)}")
+
+                                with open(blend_file_path, "rb") as g:
+                                    blend_data = g.read()
+                                    remap_data = remap(blend_data, vg_remap.indices, use_default_remap=use_default_remap)
+                                with open(blend_file_path, "wb") as g:
+                                    g.write(remap_data)
+                                    log_message(log, f"File: {blend_file} VGs remapped successfully with fd9483ca!")
+                                file_modified = True
+
+                                # Apply second remap with 060f5303
+                                log_message(log, f'Applying second remap with 060f5303...')
+                                with open(blend_file_path, "rb") as g:
+                                    blend_data = g.read()
+                                    remap_data = remap(blend_data, remaps["060f5303"].indices, use_default_remap=use_default_remap)
+                                with open(blend_file_path, "wb") as g:
+                                    g.write(remap_data)
+                                    log_message(log, f"File: {blend_file} VGs remapped successfully with 060f5303!")
+                            except Exception as e:
+                                log_message(log, f'Error remapping file: {blend_file}')
+                                log_message(log, str(e))
+                                continue
+                    else:  
+                        log_message(log, f'Found blend files for {vg_remap.character}. Applying remap...')
+                        for blend_file in blend_files:
+                            blend_file_path = os.path.join(meshes_folder, blend_file)
+                            try:
+                                # Create backup before modifying
+                                backup_path = blend_file_path + '.bak'
+                                import shutil
+                                shutil.copy2(blend_file_path, backup_path)
+                                log_message(log, f"Created backup: {os.path.basename(backup_path)}")
+
+                                # Check if ChangLi 1.4 remap
+                                if use_default_remap == True:
+                                    log_message(log, f"Applying Merged Skeleton Remap for ChangLi 1.4")
+                                else:
+                                    log_message(log, f"Applying Component Remap for {vg_remap.character}")
+
+                                with open(blend_file_path, "rb") as g:
+                                    blend_data = g.read()
+                                    remap_data = remap(blend_data, vg_remap.indices, use_default_remap=use_default_remap)
+                                with open(blend_file_path, "wb") as g:
+                                    g.write(remap_data)
+                                    log_message(log, f"File: {blend_file} VGs remapped successfully!")
+                                file_modified = True
+                            except Exception as e:
+                                log_message(log, f'Error remapping file: {blend_file}')
+                                log_message(log, str(e))
+                                continue
 
             jianxin_hashes_found = False
-            for version, hash_map in [("1.2", hash_maps.old_vs_new), ("1.3", hash_maps.old_vs_new13)]:
+            changli_hash_found = False
+            for version, hash_map in [("1.2", hash_maps.old_vs_new), ("1.3", hash_maps.old_vs_new13), ("1.4", hash_maps.old_vs_new14)]:
                 version_modified = False
                 for character, mappings in hash_map.items():
                     for old, new in mappings.items():
                         pattern = rf'^hash\s*=\s*{re.escape(old.lower())}'
                         matches = re.findall(pattern, s, re.MULTILINE | re.IGNORECASE)
                         occurrences = len(matches)
-
+                        
                         if occurrences > 0:
                             s = re.sub(pattern, f'hash = {new.lower()}', s, flags=re.MULTILINE | re.IGNORECASE)
-                            if old == "435d999a":
-                                log_message(log, f'Found {old} ({occurrences} valid occurrences) ------> Match! to {new} for Yinlin, YangYan, Chixia, Yinlin!')
-                            else:
-                                log_message(log, f'Found {old} ({occurrences} valid occurrences) ------> Match! to {new} for {character}!')
+                            if old == "435d999a" or old == "aeb47e33":
+                                log_message(log, f'[Fix {version}] Found {old} ({occurrences} valid occurrences) ------> Match! to {new} for Yinlin, YangYan, Chixia, JianXin and More!')
+                            else:           
+                                log_message(log, f'[Fix {version}] Found {old} ({occurrences} valid occurrences) ------> Match! to {new} for {character}!')
                             file_modified = True
                             version_modified = True
                             if character == "Jianxin" and old in ["affc2fc3", "ead048c8"]:
                                 jianxin_hashes_found = True
+                            if character == "ChangLi" and (old in ["5f8aac45", "060f5303"] or new in ["d14bed8b", "277e18c9"]):
+                                changli_hash_found = True
                         elif re.search(rf'^hash\s*=\s*{re.escape(new.lower())}', s, re.MULTILINE | re.IGNORECASE):
                             new_occurrences = len(re.findall(rf'^hash\s*=\s*{re.escape(new.lower())}', s, re.MULTILINE | re.IGNORECASE))
-                            if old == "435d999a":
-                                log_message(log, f'Found {new} ({new_occurrences} valid occurrences) ------> Already remapped for Yinlin, YangYan, Chixia, Yinlin!')
+                            if old == "435d999a" or old == "aeb47e33":
+                                log_message(log, f'[Fix {version}] Found {new} ({new_occurrences} valid occurrences) ------> Already remapped for Yinlin, YangYan, Chixia, JianXin and More!')
                             else:
-                                log_message(log, f'Found {new} ({new_occurrences} valid occurrences) ------> Already remapped for {character}!')
+                                log_message(log, f'[Fix {version}] Found {new} ({new_occurrences} valid occurrences) ------> Already remapped for {character}!')
                             if character == "Jianxin" and old in ["affc2fc3", "ead048c8"]:
                                 jianxin_hashes_found = True
-
+                            if character == "ChangLi" and (old in ["5f8aac45", "060f5303"] or new in ["d14bed8b", "277e18c9"]):
+                                changli_hash_found = True
+                
             # Special handling for Jianxin Shapekey sum, thank you Spectrum :3
             if jianxin_hashes_found:
                 lines = s.split('\n')
@@ -336,6 +521,48 @@ def apply_hash_fix(folder_path):
                 if not shapekey_line_found:
                     log_message(log, f'Warning: shapekey_checksum line not found for Jianxin')
                 s = '\n'.join(lines)
+
+            # Special handling for Changli indices
+            if changli_hash_found:
+                log_message(log, "Starting match fixes for Changli")
+                lines = s.split('\n')
+                modified_lines = []
+                indices_modified = False
+                for line in lines:
+                    if line.strip().startswith("match_index_count") and "81513" in line:
+                        modified_line = line.replace("81513", "82533")
+                        log_message(log, f'Changed match_index_count from 81513 to 82533')
+                        modified_lines.append(modified_line)
+                        indices_modified = True
+                    elif line.strip().startswith("match_first_index"):
+                        if "152343" in line:
+                            modified_line = line.replace("152343", "153363")
+                            log_message(log, f'Changed match_first_index from 152343 to 153363')
+                            modified_lines.append(modified_line)
+                            indices_modified = True
+                        elif "198855" in line:
+                            modified_line = line.replace("198855", "199875")
+                            log_message(log, f'Changed match_first_index from 198855 to 199875')
+                            modified_lines.append(modified_line)
+                            indices_modified = True
+                        elif "283461" in line:
+                            modified_line = line.replace("283461", "284481")
+                            log_message(log, f'Changed match_first_index from 283461 to 284481')
+                            modified_lines.append(modified_line)
+                            indices_modified = True
+                        elif "285489" in line:
+                            modified_line = line.replace("285489", "286509")
+                            log_message(log, f'Changed match_first_index from 285489 to 286509')
+                            modified_lines.append(modified_line)
+                            indices_modified = True
+                        else:
+                            modified_lines.append(line)
+                    else:
+                        modified_lines.append(line)
+                s = '\n'.join(modified_lines)
+                if indices_modified:
+                    log_message(log, f'Updated indices for Changli')
+                    file_modified = True
 
             if file_modified:
                 backup_ini = create_backup(file_path, ini_file=True)
@@ -352,32 +579,68 @@ def apply_hash_fix(folder_path):
             log_message(log, str(e))
             continue
         log_message(log, "=" * 70)
-
+    
     return log, processed_files_count, len(ini_files)
 
 def remap_verina(folder_path):
     return apply_hash_fix(folder_path)
 
-def remap(blend_data, new_order, stride=8):
+def remap(blend_data, new_order, stride=8, use_default_remap=False):
     if len(blend_data) % stride != 0:
         raise ValueError("Invalid blend file length")
 
     remapped_blend = bytearray()
 
-    for i in range(0, len(blend_data), stride):
-        blendindices = struct.unpack_from("<BBBB", blend_data, i)
-        blendweights = blend_data[i + 4:i + 8]
+    if isinstance(new_order, dict):
+        if use_default_remap:
+            # Use default Changli 1.4 remapping
+            for i in range(0, len(blend_data), stride):
+                blendindices = struct.unpack_from("<BBBB", blend_data, i)
+                blendweights = blend_data[i + 4:i + 8]
 
-        outputindices = bytearray()
-        for index in blendindices:
-            remapped_index = new_order[index] if index < len(new_order) else index
-            outputindices.append(remapped_index)
+                outputindices = bytearray()
+                for index in blendindices:
+                    # Only use the top-level remapping indices
+                    remapped_index = new_order.get(index, index) if not isinstance(new_order.get(index), dict) else index
+                    outputindices.append(remapped_index)
 
-        remapped_blend += outputindices + blendweights
+                remapped_blend += outputindices + blendweights
+        else:
+            # Use component remap
+            comp_remap = new_order["component_remap"]
+            offset = comp_remap["vertex_offset"] * stride
+            indices_map = comp_remap["indices"]
+
+            # Copy data before component unchanged
+            remapped_blend += blend_data[:offset]
+
+            # Remap the component
+            for i in range(offset, len(blend_data), stride):
+                blendindices = struct.unpack_from("<BBBB", blend_data, i)
+                blendweights = blend_data[i + 4:i + 8]
+
+                outputindices = bytearray()
+                for index in blendindices:
+                    remapped_index = indices_map.get(index, index)
+                    outputindices.append(remapped_index)
+
+                remapped_blend += outputindices + blendweights
+    else:
+        # Handle list-based remapping
+        for i in range(0, len(blend_data), stride):
+            blendindices = struct.unpack_from("<BBBB", blend_data, i)
+            blendweights = blend_data[i + 4:i + 8]
+
+            outputindices = bytearray()
+            for index in blendindices:
+                remapped_index = new_order[index] if index < len(new_order) else index
+                outputindices.append(remapped_index)
+
+            remapped_blend += outputindices + blendweights
 
     if len(remapped_blend) != len(blend_data):
         raise ValueError("Remapped blend file is invalid")
-
+    
     return remapped_blend
 
 def force_remap(folder):
@@ -398,34 +661,60 @@ def force_remap(folder):
             print('Invalid option')
 
     option_key = list(remaps.keys())[option]
-
-    for root, dirs, files in os.walk(folder):
-        blend_files = [os.path.join(root, file) for file in files if file.lower().endswith(('.blend.buf', '.blend.buf.bak'))]
-        if not blend_files:
-            log_message(log, f"No blend files found in folder: {root}")
-            continue
-
-        # Check if there's any .bak file in the current folder
-        bak_files = [f for f in files if f.endswith('.bak')]
-        if bak_files:
-            log_message(log, f'Found .bak files in {root}. Skipping remapping for this folder.')
-            continue
-
-        for blend_file in blend_files:
+    
+   
+    use_default_remap = False
+    if remaps[option_key].character == "Changli_1.4":
+        log_message(log, "\nSelect remap type for Changli 1.4:")
+        log_message(log, "1: Merged")
+        log_message(log, "2: Component")
+        while True:
             try:
-                backup_file = create_backup(blend_file)
-                log_message(log, f"Backup created: {backup_file}")
+                remap_type = int(input('Select remap type (1 or 2): '))
+                if remap_type in [1, 2]:
+                    use_default_remap = (remap_type == 1)
+                    break
+                print('Invalid option')
+            except ValueError:
+                print('Invalid option')
 
-                with open(blend_file, "rb") as g:
-                    blend_data = g.read()
-                    remap_data = remap(blend_data, remaps[option_key].indices)
-                with open(blend_file, "wb") as g:
-                    g.write(remap_data)
-                log_message(log, f"File: {os.path.basename(blend_file)} VGs remapped successfully!")
-                processed_files_count += 1
-            except Exception as e:
-                log_message(log, f'Error processing file: {os.path.basename(blend_file)}')
-                log_message(log, str(e))
+    
+    files = os.listdir(folder)
+    blend_files = [os.path.join(folder, file) for file in files if file.lower().endswith('blend.buf')]
+    
+    
+    if len(blend_files) > 1:
+        log_message(log, "Multiple blend.buf files found. Aborting to prevent unsafe modifications.")
+        return log, processed_files_count, len(blend_files)
+    
+    if blend_files:
+        bak_files = [f for f in files if f.endswith('.bak')]
+        if not bak_files:
+            for blend_file in blend_files:
+                try:
+                    
+                    backup_file = blend_file + '.bak'
+                    shutil.copy2(blend_file, backup_file)
+                    log_message(log, f"Backup created: {backup_file}")
+
+                    
+                    with open(blend_file, "rb") as g:
+                        blend_data = g.read()
+                        remap_data = remap(blend_data, remaps[option_key].indices, use_default_remap=use_default_remap)
+
+                    
+                    with open(blend_file, "wb") as g:
+                        g.write(remap_data)
+                    log_message(log, f"File: {os.path.basename(blend_file)} VGs remapped successfully!")
+                    processed_files_count += 1
+
+                except Exception as e:
+                    log_message(log, f'Error processing file: {os.path.basename(blend_file)}')
+                    log_message(log, str(e))
+        else:
+            log_message(log, f'Found .bak files in {folder}. Skipping remapping for this folder.')
+    else:
+        log_message(log, f"No blend files found in folder: {folder}")
 
     return log, processed_files_count, len(blend_files)
 
@@ -439,11 +728,26 @@ if __name__ == '__main__':
         log, processed_files_count, total_files = force_remap(folder_path)
     else:
         log, processed_files_count, total_files = remap_verina(folder_path)
-
+    
     end_time = time.time()
     elapsed_time = end_time - start_time
     print(f"\nProcessing took {elapsed_time:.2f} seconds")
     print(f"Total files found: {total_files}")
     print(f"Processed {processed_files_count} files")
+
+    # Only log modified files
+    # modified_log = []
+    # for line in log:
+    #     if any(keyword in line for keyword in ['Applied', 'Updated', 'Modified', 'Changed', 'Backup created']):
+    #         modified_log.append(line)
+
+    # # Save log to file
+    # log_file = "wwmi_fix_log.txt"
+    # with open(log_file, "w", encoding="utf-8") as f:
+    #     f.write(f"Processing took {elapsed_time:.2f} seconds\n")
+    #     f.write(f"Total files found: {total_files}\n")
+    #     f.write(f"Processed {processed_files_count} files\n\n")
+    #     f.write("\n".join(modified_log))
+    # print(f"\nLog saved to {log_file}")
 
     input('Press Enter to exit...')

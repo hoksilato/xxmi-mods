@@ -5,7 +5,7 @@ Contains of mods (experiments) and scripts for below games, work with [XXMI](htt
 ## Wuthering Waves
 
 - Mods (experiments)
-- Fix - [read more](./ww/_scripts/README.md)
+- Fix 1.4 - [read more](./ww/_scripts/README.md)
 
 ## Zenless Zone Zero
 
