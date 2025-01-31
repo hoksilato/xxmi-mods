@@ -16,6 +16,31 @@ PyInstaller --onefile --clean wuwa_fix.py
 
 ## Version
 
+### 1.3 - [Link](https://gamebanana.com/tools/18109)
+
+> Author: Gustav0
+
+Only a few characters have been affected by this patch, with some changes being more notable than others.
+
+#### Broken Characters
+
+- Verina
+- Yinlin
+- Rover (Female)
+- Rover (Male)
+- Jianxin
+  - Fix the issue with Jianxin's mouth, as it required special treatment. The checksum for the shapekeys has been altered.
+- Chixia
+- Yangyang
+- Sanhua
+  - New face lightmap
+
+#### LightMap / FaceShadow Issue
+
+Several characters in the game share this texture, such as Yangyan, Chixia, and others. In this patch, not only the hash but the texture itself was changed. If a single mod uses the old texture, it will conflict with all others since the hash is shared.
+
+The script searches for the old texture and replaces it. If the issue is still not resolved, search through the mods until you find the culprit.
+
 ### 1.2 - [Link](https://gamebanana.com/tools/17752)
 
 > Author: Gustav0
